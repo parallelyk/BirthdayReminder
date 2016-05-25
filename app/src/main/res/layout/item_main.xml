@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/image_item_main"
+        android:src="@android:mipmap/sym_def_app_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/name_item_main"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="姓名"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/image_item_main"
+        android:layout_toEndOf="@+id/image_item_main"
+        android:layout_marginLeft="34dp"
+        android:layout_marginStart="34dp" />
+    <TextView
+        android:id="@+id/dayBefore_item_main"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="还有xx天生日"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/name_item_main"
+        android:layout_toEndOf="@+id/name_item_main"
+        android:layout_marginLeft="52dp"
+        android:layout_marginStart="52dp" />
+    <TextView
+        android:id="@+id/dayExact_item_main"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="公历6月6号"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="28dp"
+        android:layout_marginEnd="28dp" />
+</RelativeLayout>
