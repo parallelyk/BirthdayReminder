@@ -22,7 +22,7 @@
         </activity>
         <activity android:name=".activity.AddFriendActivity"></activity>
 
-        <receiver android:name=".broadcastReceiver.RemindReceiver">
+        <receiver android:name=".receiver.RemindReceiver">
             <intent-filter>
                 <action android:name="com.BirthdayReminder.birthday_Remind" />
             </intent-filter>
