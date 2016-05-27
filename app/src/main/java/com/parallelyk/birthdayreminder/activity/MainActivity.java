@@ -1,5 +1,6 @@
 package com.parallelyk.birthdayreminder.activity;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.parallelyk.birthdayreminder.R;
@@ -17,7 +19,8 @@ import com.parallelyk.birthdayreminder.fragment.MainFragment;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener ,MainFragment.OnFragmentInteractionListener {//AppCompatActivity继承至FragmentActivity
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener ,
+        MainFragment.OnFragmentInteractionListener {//AppCompatActivity继承至FragmentActivity
 
     private RecyclerView mRecyclerView;
     private Toolbar toolbar;
@@ -46,6 +49,21 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         toolbar.setTitle("生日小助手");
         setSupportActionBar(toolbar);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent ;
+                switch (item.getItemId()) {
+                    case R.id.action_search:
+                        break;
+                    case R.id.action_add:
+                        intent = new Intent(MainActivity.this,AddFriendActivity.class);
+                        startActivity(intent);
+                        break;
+                }
+                return false;
+            }
+        });
 
         mViewPager = (ViewPager) findViewById(R.id.vp_main);
         mTv_friend = (TextView) findViewById(R.id.friend_text_main);
@@ -111,4 +129,20 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+//    @Override
+//    public boolean onMenuItemClick(MenuItem item) {
+//        Intent intent ;
+//        switch (item.getItemId()) {
+//            case R.id.action_search:
+//
+//                break;
+//            case R.id.action_add:
+//                intent = new Intent(this,AddFriendActivity.class);
+//                startActivity(intent);
+//                break;
+//
+//        }
+//        return false;
+//    }
 }

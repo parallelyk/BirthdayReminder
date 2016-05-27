@@ -20,6 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.AddFriendActivity"></activity>
+
+        <receiver android:name=".broadcastReceiver.RemindReceiver">
+            <intent-filter>
+                <action android:name="com.BirthdayReminder.birthday_Remind" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

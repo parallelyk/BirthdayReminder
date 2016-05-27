@@ -1,10 +1,11 @@
 package com.parallelyk.birthdayreminder.fragment;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
-import android.database.Cursor;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import com.parallelyk.birthdayreminder.R;
 import com.parallelyk.birthdayreminder.adapter.MainAdapter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 /**
@@ -35,9 +37,8 @@ public class FriendFragment extends MainFragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private OnFragmentInteractionListener mListener;
-
+    private MainAdapter adapter;
     private RecyclerView mRecyclerView;
     private Context mContext;
     private ArrayList<HashMap<String,Object>> mData = new ArrayList<>();
@@ -79,52 +80,38 @@ public class FriendFragment extends MainFragment {
         mContext = getContext();
         View view = inflater.inflate(R.layout.fragment_friend, container, false);
         init(view);
-
+        sendRemind();
         return view;
     }
 
     private void init(View view){
-        getContactData();
-        MainAdapter adapter = new MainAdapter(mContext,mData);
+        getData();
+        adapter = new MainAdapter(mContext,mData);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.friend_listview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        //mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setAdapter(adapter);
     }
 
-        private void getContactData(){
-
-        Cursor cursor = mContext.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI,
-                null, null, null, null);
-        if(cursor.moveToFirst()){
-            do{
-                String name = cursor.getString(cursor
-                        .getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                int phoneCount = cursor.getInt(cursor
-                        .getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
-                String number=null;
-                String contactId = cursor.getString(cursor
-                        .getColumnIndex(ContactsContract.Contacts._ID));
-                if (phoneCount > 0) {
-                    // 获得联系人的电话号码
-                    Cursor phones = mContext.getContentResolver().query(
-                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                            null,
-                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID
-                                    + " = " + contactId, null, null);
-                    if (phones.moveToFirst()) {
-                        number = phones
-                                .getString(phones
-                                        .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                    }
-                    phones.close();
-                }
-                HashMap<String,Object> hashMap = new HashMap<>();
-                hashMap.put("name",name);
-                hashMap.put("dayleft",number);
-                hashMap.put("birthday","birthday");
-                mData.add(hashMap);
-            }while (cursor.moveToNext());
+    private void getData(){
+        mData.clear();
+        for(int i = 0;i<20;i++){
+            HashMap<String,Object> hashMap = new HashMap<>();
+            hashMap.put("name","名字"+i);
+            hashMap.put("dayleft","还有xx天生日"+i);
+            hashMap.put("birthday","公历6月6日"+i);
+            mData.add(hashMap);
         }
+    }
+
+    private void sendRemind(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2016,04,27,16,16);
+        Intent intent = new Intent("com.BirthdayReminder.birthday_Remind");
+        PendingIntent pi=PendingIntent.getBroadcast(getActivity(), 0, intent,0);
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
+        //alarmManager.set(AlarmManager.RTC_WAKEUP,10000,pi);
 
     }
 

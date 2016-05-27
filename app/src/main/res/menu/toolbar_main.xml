@@ -5,16 +5,16 @@
 
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_add"
         android:title="action_settings"
         android:orderInCategory="100"
         android:icon="@android:drawable/ic_menu_add"
         app:showAsAction="always" />
     <item
-        android:id="@+id/action_test"
+        android:id="@+id/action_search"
         android:title="action_test"
         android:orderInCategory="10"
-        android:icon="@android:drawable/ic_menu_share"
+        android:icon="@android:drawable/ic_search_category_default"
 
         app:showAsAction="always" />
 </menu>
