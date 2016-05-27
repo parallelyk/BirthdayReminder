@@ -76,6 +76,8 @@ public class MainFragment extends Fragment {
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
+
+
         }
     }
 
