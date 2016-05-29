@@ -19,10 +19,17 @@ import java.util.HashMap;
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> {
     private Context mContext;
     private ArrayList<HashMap<String,Object>> mData;
+    private OnItemClickLitener mOnItemClickLitener;
     public MainAdapter(Context context , ArrayList<HashMap<String,Object>> data){
         mContext = context;
         mData = data;
     }
+
+    public void setOnItemClickLitener(OnItemClickLitener mOnItemClickLitener)
+    {
+        this.mOnItemClickLitener = mOnItemClickLitener;
+    }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_main,parent,false);
@@ -31,12 +38,34 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
         holder.name.setText(mData.get(position).get("name").toString());
         holder.dayleft.setText(mData.get(position).get("dayleft").toString());
         holder.birthday.setText(mData.get(position).get("birthday").toString());
         //holder.imageView.setImageResource(mData.get(position).get("imageView").toString());
+        if (mOnItemClickLitener != null)
+        {
+            holder.itemView.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    int pos = holder.getLayoutPosition();
+                    mOnItemClickLitener.onItemClick(holder.itemView, pos);
+                }
+            });
 
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener()
+            {
+                @Override
+                public boolean onLongClick(View v)
+                {
+                    int pos = holder.getLayoutPosition();
+                    mOnItemClickLitener.onItemLongClick(holder.itemView, pos);
+                    return true;
+                }
+            });
+        }
     }
 
 
@@ -48,6 +77,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
     {
         ImageView imageView;
         TextView name,dayleft,birthday;
+        View itemView;
 
         public MyViewHolder(View view)
         {
@@ -56,6 +86,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
             name = (TextView) view.findViewById(R.id.name_item_main);
             dayleft = (TextView) view.findViewById(R.id.dayBefore_item_main);
             birthday = (TextView) view.findViewById(R.id.dayExact_item_main);
+            itemView = view.findViewById(R.id.view_item_main);
         }
+    }
+
+    public interface OnItemClickLitener
+    {
+        void onItemClick(View view, int position);
+        void onItemLongClick(View view , int position);
     }
 }

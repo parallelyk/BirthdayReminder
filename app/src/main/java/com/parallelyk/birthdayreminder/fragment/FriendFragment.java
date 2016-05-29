@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.parallelyk.birthdayreminder.R;
 import com.parallelyk.birthdayreminder.adapter.MainAdapter;
@@ -28,7 +29,7 @@ import java.util.HashMap;
  * Use the {@link FriendFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FriendFragment extends MainFragment {
+public class FriendFragment extends MainFragment implements MainAdapter.OnItemClickLitener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -87,10 +88,12 @@ public class FriendFragment extends MainFragment {
     private void init(View view){
         getData();
         adapter = new MainAdapter(mContext,mData);
+        adapter.setOnItemClickLitener(this);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.friend_listview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         //mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setAdapter(adapter);
+
     }
 
     private void getData(){
@@ -106,7 +109,20 @@ public class FriendFragment extends MainFragment {
 
     private void sendRemind(){
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2016,04,27,16,16);
+        calendar.set(2016,04,28,20,10);
+        if(calendar.getTimeInMillis()<System.currentTimeMillis()){
+            return ;
+        }
+        Intent intent = new Intent("com.BirthdayReminder.birthday_Remind");
+        PendingIntent pi=PendingIntent.getBroadcast(getActivity(), 0, intent,0);
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
+        //alarmManager.set(AlarmManager.RTC_WAKEUP,10000,pi);
+
+    }
+    private void sendRemind(Calendar calendar){
+        //Calendar calendar = Calendar.getInstance();
+        //calendar.set(2016,04,27,16,16);
         Intent intent = new Intent("com.BirthdayReminder.birthday_Remind");
         PendingIntent pi=PendingIntent.getBroadcast(getActivity(), 0, intent,0);
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
@@ -135,4 +151,15 @@ public class FriendFragment extends MainFragment {
     }
 
 
+    @Override
+    public void onItemClick(View view, int position) {
+        Toast.makeText(getActivity(), position + " click",
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onItemLongClick(View view, int position) {
+        Toast.makeText(getActivity(), position + "  long click",
+                Toast.LENGTH_SHORT).show();
+    }
 }
